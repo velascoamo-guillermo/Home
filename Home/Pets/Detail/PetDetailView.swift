@@ -61,7 +61,7 @@ struct PetDetailView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .foregroundStyle(selectedTab == tab ? .tint : .secondary)
+                        .foregroundStyle(selectedTab == tab ? Color.accentColor : Color.secondary)
                     }
                     .overlay(alignment: .bottom) {
                         if selectedTab == tab {
