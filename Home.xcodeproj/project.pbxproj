@@ -32,6 +32,10 @@
 		CC33DD44EE55FF6600AABB22 /* ClinicalHistoryTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC33DD44EE55FF6600AABB11 /* ClinicalHistoryTabView.swift */; };
 		DD44EE55FF6600AABB22CC33 /* EventsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD44EE55FF6600AABB22CC01 /* EventsTabView.swift */; };
 		EE55FF6600AABB22CC33DD44 /* FilesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE55FF6600AABB22CC33DD01 /* FilesTabView.swift */; };
+		AB11CD22EF33AB44CD55EF01 /* AddClinicalEntrySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB11CD22EF33AB44CD55EF11 /* AddClinicalEntrySheet.swift */; };
+		AB22CD33EF44AB55CD66EF02 /* ClinicalEntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB22CD33EF44AB55CD66EF12 /* ClinicalEntryDetailView.swift */; };
+		AB33CD44EF55AB66CD77EF03 /* FilePickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB33CD44EF55AB66CD77EF13 /* FilePickerCoordinator.swift */; };
+		AB44CD55EF66AB77CD88EF04 /* FilePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */; };
 		C5FC049B579BEC4CBF8EC041 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1794F5A736E951E42FC707 /* ContentView.swift */; };
 		CD57016D61746F8775546D4B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C806DCF5034FAB66D7D2B8 /* HomeView.swift */; };
 		E2EC81F2A4FA6DC413810AFC /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBBAB7C0182E30253E98F35 /* Product.swift */; };
@@ -66,6 +70,10 @@
 		CC33DD44EE55FF6600AABB11 /* ClinicalHistoryTabView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ClinicalHistoryTabView.swift; path = ClinicalHistoryTabView.swift; sourceTree = "<group>"; };
 		DD44EE55FF6600AABB22CC01 /* EventsTabView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventsTabView.swift; path = EventsTabView.swift; sourceTree = "<group>"; };
 		EE55FF6600AABB22CC33DD01 /* FilesTabView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilesTabView.swift; path = FilesTabView.swift; sourceTree = "<group>"; };
+		AB11CD22EF33AB44CD55EF11 /* AddClinicalEntrySheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AddClinicalEntrySheet.swift; path = AddClinicalEntrySheet.swift; sourceTree = "<group>"; };
+		AB22CD33EF44AB55CD66EF12 /* ClinicalEntryDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ClinicalEntryDetailView.swift; path = ClinicalEntryDetailView.swift; sourceTree = "<group>"; };
+		AB33CD44EF55AB66CD77EF13 /* FilePickerCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilePickerCoordinator.swift; path = FilePickerCoordinator.swift; sourceTree = "<group>"; };
+		AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilePreviewView.swift; path = FilePreviewView.swift; sourceTree = "<group>"; };
 		9583A57C90DCAB3DC119342E /* ProductCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProductCard.swift; path = ProductCard.swift; sourceTree = "<group>"; };
 		A4CDCB58B9C74EE5C806160F /* HomeApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeApp.swift; path = HomeApp.swift; sourceTree = "<group>"; };
 		B69A10084EFE887518B77FB0 /* FeatureCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FeatureCard.swift; path = FeatureCard.swift; sourceTree = "<group>"; };
@@ -90,11 +98,22 @@
 				73C53F1CBE01F7F807567F82 /* Pet.swift */,
 				61235AB3CE535474EAE6415F /* PetsView.swift */,
 				A1B2C3D4E5F6A7B8C9D0E1F2 /* Detail */,
+				AB55CD66EF77AB88CD99EF00 /* Files */,
 				B2C3D4E5F6A7B8C9D0E1F2A3 /* Models */,
 				C3D4E5F6A7B8C9D0E1F2A3B4 /* Store */,
 			);
 			name = Pets;
 			path = Pets;
+			sourceTree = "<group>";
+		};
+		AB55CD66EF77AB88CD99EF00 /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				AB33CD44EF55AB66CD77EF13 /* FilePickerCoordinator.swift */,
+				AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */,
+			);
+			name = Files;
+			path = Files;
 			sourceTree = "<group>";
 		};
 		A1B2C3D4E5F6A7B8C9D0E1F2 /* Detail */ = {
@@ -113,6 +132,8 @@
 			children = (
 				FF11AA22BB33CC44DD55EE01 /* VetEditSheet.swift */,
 				AA22BB33CC44DD55EE6600A2 /* AddAppointmentSheet.swift */,
+				AB11CD22EF33AB44CD55EF11 /* AddClinicalEntrySheet.swift */,
+				AB22CD33EF44AB55CD66EF12 /* ClinicalEntryDetailView.swift */,
 			);
 			name = Sheets;
 			path = Sheets;
@@ -354,6 +375,10 @@
 				CC33DD44EE55FF6600AABB22 /* ClinicalHistoryTabView.swift in Sources */,
 				DD44EE55FF6600AABB22CC33 /* EventsTabView.swift in Sources */,
 				EE55FF6600AABB22CC33DD44 /* FilesTabView.swift in Sources */,
+				AB11CD22EF33AB44CD55EF01 /* AddClinicalEntrySheet.swift in Sources */,
+				AB22CD33EF44AB55CD66EF02 /* ClinicalEntryDetailView.swift in Sources */,
+				AB33CD44EF55AB66CD77EF03 /* FilePickerCoordinator.swift in Sources */,
+				AB44CD55EF66AB77CD88EF04 /* FilePreviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
