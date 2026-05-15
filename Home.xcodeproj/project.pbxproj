@@ -41,7 +41,11 @@
 		AB33CD44EF55AB66CD77EF03 /* FilePickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB33CD44EF55AB66CD77EF13 /* FilePickerCoordinator.swift */; };
 		AB44CD55EF66AB77CD88EF04 /* FilePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */; };
 		CA00BB11CC22DD33EE44FF05 /* ExtractionResultSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00BB11CC22DD33EE44FF15 /* ExtractionResultSheet.swift */; };
+		CA00BB11CC22DD33EE44FF06 /* ExtractionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00BB11CC22DD33EE44FF16 /* ExtractionService.swift */; };
 		FF55AA66BB77CC88DD99EE01 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF55AA66BB77CC88DD99EE00 /* KeychainService.swift */; };
+		HT00AA11BB22CC33DD44EE01 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HT00AA11BB22CC33DD44EE11 /* DataStoreTests.swift */; };
+		HT00AA11BB22CC33DD44EE02 /* ExtractionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HT00AA11BB22CC33DD44EE12 /* ExtractionServiceTests.swift */; };
+		HT00AA11BB22CC33DD44EE03 /* Home.app in Frameworks */ = {isa = PBXBuildFile; fileRef = 50F3CD802FB7714C00238D41 /* Home.app */; };
 		C5FC049B579BEC4CBF8EC041 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1794F5A736E951E42FC707 /* ContentView.swift */; };
 		CD57016D61746F8775546D4B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C806DCF5034FAB66D7D2B8 /* HomeView.swift */; };
 		E2EC81F2A4FA6DC413810AFC /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBBAB7C0182E30253E98F35 /* Product.swift */; };
@@ -85,7 +89,11 @@
 		AB33CD44EF55AB66CD77EF13 /* FilePickerCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilePickerCoordinator.swift; path = FilePickerCoordinator.swift; sourceTree = "<group>"; };
 		AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilePreviewView.swift; path = FilePreviewView.swift; sourceTree = "<group>"; };
 		CA00BB11CC22DD33EE44FF15 /* ExtractionResultSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtractionResultSheet.swift; path = ExtractionResultSheet.swift; sourceTree = "<group>"; };
+		CA00BB11CC22DD33EE44FF16 /* ExtractionService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtractionService.swift; path = ExtractionService.swift; sourceTree = "<group>"; };
 		FF55AA66BB77CC88DD99EE00 /* KeychainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeychainService.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		HT00AA11BB22CC33DD44EE11 /* DataStoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataStoreTests.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
+		HT00AA11BB22CC33DD44EE12 /* ExtractionServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtractionServiceTests.swift; path = ExtractionServiceTests.swift; sourceTree = "<group>"; };
+		HT00AA11BB22CC33DD44EE13 /* HomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9583A57C90DCAB3DC119342E /* ProductCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProductCard.swift; path = ProductCard.swift; sourceTree = "<group>"; };
 		A4CDCB58B9C74EE5C806160F /* HomeApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeApp.swift; path = HomeApp.swift; sourceTree = "<group>"; };
 		B69A10084EFE887518B77FB0 /* FeatureCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FeatureCard.swift; path = FeatureCard.swift; sourceTree = "<group>"; };
@@ -123,9 +131,20 @@
 			isa = PBXGroup;
 			children = (
 				CA00BB11CC22DD33EE44FF15 /* ExtractionResultSheet.swift */,
+				CA00BB11CC22DD33EE44FF16 /* ExtractionService.swift */,
 			);
 			name = Claude;
 			path = Claude;
+			sourceTree = "<group>";
+		};
+		HT00AA11BB22CC33DD44EE00 /* HomeTests */ = {
+			isa = PBXGroup;
+			children = (
+				HT00AA11BB22CC33DD44EE11 /* DataStoreTests.swift */,
+				HT00AA11BB22CC33DD44EE12 /* ExtractionServiceTests.swift */,
+			);
+			name = HomeTests;
+			path = HomeTests;
 			sourceTree = "<group>";
 		};
 		AB55CD66EF77AB88CD99EF00 /* Files */ = {
@@ -242,6 +261,7 @@
 			children = (
 				50F3CD812FB7714C00238D41 /* Products */,
 				40827EA68B6B3F6846C702EA /* Home */,
+				HT00AA11BB22CC33DD44EE00 /* HomeTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -249,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				50F3CD802FB7714C00238D41 /* Home.app */,
+				HT00AA11BB22CC33DD44EE13 /* HomeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -332,7 +353,42 @@
 			productReference = 50F3CD802FB7714C00238D41 /* Home.app */;
 			productType = "com.apple.product-type.application";
 		};
+		HT00AA11BB22CC33DD44EE20 /* HomeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = HT00AA11BB22CC33DD44EE30 /* Build configuration list for PBXNativeTarget "HomeTests" */;
+			buildPhases = (
+				HT00AA11BB22CC33DD44EE21 /* Sources */,
+				HT00AA11BB22CC33DD44EE22 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				HT00AA11BB22CC33DD44EE25 /* PBXTargetDependency */,
+			);
+			name = HomeTests;
+			productName = HomeTests;
+			productReference = HT00AA11BB22CC33DD44EE13 /* HomeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		HT00AA11BB22CC33DD44EE24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50F3CD782FB7714C00238D41 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50F3CD7F2FB7714C00238D41;
+			remoteInfo = Home;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		HT00AA11BB22CC33DD44EE25 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 50F3CD7F2FB7714C00238D41 /* Home */;
+			targetProxy = HT00AA11BB22CC33DD44EE24 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXProject section */
 		50F3CD782FB7714C00238D41 /* Project object */ = {
@@ -344,6 +400,10 @@
 				TargetAttributes = {
 					50F3CD7F2FB7714C00238D41 = {
 						CreatedOnToolsVersion = 26.0;
+					};
+					HT00AA11BB22CC33DD44EE20 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 50F3CD7F2FB7714C00238D41;
 					};
 				};
 			};
@@ -362,9 +422,33 @@
 			projectRoot = "";
 			targets = (
 				50F3CD7F2FB7714C00238D41 /* Home */,
+				HT00AA11BB22CC33DD44EE20 /* HomeTests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase (HomeTests) section */
+		HT00AA11BB22CC33DD44EE21 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				HT00AA11BB22CC33DD44EE01 /* DataStoreTests.swift in Sources */,
+				HT00AA11BB22CC33DD44EE02 /* ExtractionServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase (HomeTests) section */
+
+/* Begin PBXFrameworksBuildPhase (HomeTests) section */
+		HT00AA11BB22CC33DD44EE22 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				HT00AA11BB22CC33DD44EE03 /* Home.app in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase (HomeTests) section */
 
 /* Begin PBXResourcesBuildPhase section */
 		50F3CD7E2FB7714C00238D41 /* Resources */ = {
@@ -420,6 +504,7 @@
 				AB33CD44EF55AB66CD77EF03 /* FilePickerCoordinator.swift in Sources */,
 				AB44CD55EF66AB77CD88EF04 /* FilePreviewView.swift in Sources */,
 				CA00BB11CC22DD33EE44FF05 /* ExtractionResultSheet.swift in Sources */,
+				CA00BB11CC22DD33EE44FF06 /* ExtractionService.swift in Sources */,
 				FF55AA66BB77CC88DD99EE01 /* KeychainService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -612,6 +697,38 @@
 			};
 			name = Release;
 		};
+		HT00AA11BB22CC33DD44EE31 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 523MDDHYGD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guille.HomeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Home.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Home";
+			};
+			name = Debug;
+		};
+		HT00AA11BB22CC33DD44EE32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 523MDDHYGD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guille.HomeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Home.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Home";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -629,6 +746,15 @@
 			buildConfigurations = (
 				50F3CD8C2FB7714D00238D41 /* Debug */,
 				50F3CD8D2FB7714D00238D41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		HT00AA11BB22CC33DD44EE30 /* Build configuration list for PBXNativeTarget "HomeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				HT00AA11BB22CC33DD44EE31 /* Debug */,
+				HT00AA11BB22CC33DD44EE32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
