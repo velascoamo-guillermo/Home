@@ -2,7 +2,8 @@
 
 **Date:** 2026-05-15  
 **Scope:** Initial layout/mockup — login screen + authenticated tab shell  
-**Auth:** Mock only (no backend)
+**Auth:** Mock only (no backend)  
+**Platform:** iOS 26+, Liquid Glass design language
 
 ---
 
@@ -105,6 +106,19 @@ Home/
 | `PetRow.swift` | HStack with pet icon + name/breed + chevron |
 | `ProductCard.swift` | VStack with icon + name + price, material bg |
 | `SettingsRow.swift` | HStack with icon + title + subtitle + chevron |
+
+---
+
+## iOS 26 / Liquid Glass Requirements
+
+- **Minimum deployment target:** iOS 26
+- **Tab bar:** Use new `Tab` API (`TabView` with `Tab {}` syntax, iOS 18+/26) — not legacy `.tabItem`
+- **Liquid Glass materials:** Prefer `.glassEffect()` modifier (iOS 26) over `.regularMaterial` / `.ultraThinMaterial` where supported — gives the frosted translucent glass look
+- **Navigation:** Use `NavigationStack` (already planned) — compatible with iOS 26
+- **Login fields:** `.glassEffect()` on field backgrounds instead of `.ultraThinMaterial`
+- **Cards:** `.glassEffect()` for `FeatureCard` and `ProductCard` backgrounds
+- **Tab bar background:** adopts Liquid Glass automatically on iOS 26 with new `TabView` API
+- **Avoid deprecated APIs:** No `.navigationBarHidden(true)` — use `.toolbar(.hidden, for: .navigationBar)` instead
 
 ---
 
