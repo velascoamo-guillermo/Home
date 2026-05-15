@@ -1,10 +1,10 @@
 import Foundation
 
-enum FileSourceType: String, Codable {
+enum FileSourceType: String, Codable, Hashable {
     case photo, document, scan
 }
 
-enum FileLink: Codable, Equatable {
+enum FileLink: Codable, Equatable, Hashable {
     case event(UUID)
     case clinicalEntry(UUID)
     case standalone
@@ -36,7 +36,7 @@ enum FileLink: Codable, Equatable {
     }
 }
 
-struct PetFile: Codable, Identifiable {
+struct PetFile: Codable, Identifiable, Hashable {
     var id: UUID = UUID()
     var petId: UUID
     var filename: String

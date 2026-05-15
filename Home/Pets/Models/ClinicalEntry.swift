@@ -1,6 +1,6 @@
 import Foundation
 
-struct ClinicalEntry: Codable, Identifiable {
+struct ClinicalEntry: Codable, Identifiable, Hashable {
     var id: UUID = UUID()
     var petId: UUID
     var date: Date

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Veterinarian: Codable, Identifiable {
+struct Veterinarian: Codable, Identifiable, Hashable {
     var id: UUID = UUID()
     var name: String
     var clinicName: String

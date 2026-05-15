@@ -1,6 +1,6 @@
 import Foundation
 
-enum EventCategory: String, Codable, CaseIterable {
+enum EventCategory: String, Codable, CaseIterable, Hashable {
     case vaccine, grooming, medication, weight, other
 
     var icon: String {
@@ -16,7 +16,7 @@ enum EventCategory: String, Codable, CaseIterable {
     var label: String { rawValue.capitalized }
 }
 
-struct PetEvent: Codable, Identifiable {
+struct PetEvent: Codable, Identifiable, Hashable {
     var id: UUID = UUID()
     var petId: UUID
     var date: Date
