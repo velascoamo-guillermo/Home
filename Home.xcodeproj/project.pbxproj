@@ -35,6 +35,9 @@
 		EE55FF6600AABB22CC33DD44 /* FilesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE55FF6600AABB22CC33DD01 /* FilesTabView.swift */; };
 		AB11CD22EF33AB44CD55EF01 /* AddClinicalEntrySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB11CD22EF33AB44CD55EF11 /* AddClinicalEntrySheet.swift */; };
 		AB22CD33EF44AB55CD66EF02 /* ClinicalEntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB22CD33EF44AB55CD66EF12 /* ClinicalEntryDetailView.swift */; };
+		EE66FF7700BBCC33DD44EE05 /* AddEventSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE66FF7700BBCC33DD44EE15 /* AddEventSheet.swift */; };
+		EE77FF8811CCDD44EE55FF06 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE77FF8811CCDD44EE55FF16 /* EventDetailView.swift */; };
+		EE88FF9922DDEE55FF6600B7 /* EventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE88FF9922DDEE55FF6600A7 /* EventRow.swift */; };
 		AB33CD44EF55AB66CD77EF03 /* FilePickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB33CD44EF55AB66CD77EF13 /* FilePickerCoordinator.swift */; };
 		AB44CD55EF66AB77CD88EF04 /* FilePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */; };
 		C5FC049B579BEC4CBF8EC041 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1794F5A736E951E42FC707 /* ContentView.swift */; };
@@ -74,6 +77,9 @@
 		EE55FF6600AABB22CC33DD01 /* FilesTabView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilesTabView.swift; path = FilesTabView.swift; sourceTree = "<group>"; };
 		AB11CD22EF33AB44CD55EF11 /* AddClinicalEntrySheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AddClinicalEntrySheet.swift; path = AddClinicalEntrySheet.swift; sourceTree = "<group>"; };
 		AB22CD33EF44AB55CD66EF12 /* ClinicalEntryDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ClinicalEntryDetailView.swift; path = ClinicalEntryDetailView.swift; sourceTree = "<group>"; };
+		EE66FF7700BBCC33DD44EE15 /* AddEventSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AddEventSheet.swift; path = AddEventSheet.swift; sourceTree = "<group>"; };
+		EE77FF8811CCDD44EE55FF16 /* EventDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventDetailView.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
+		EE88FF9922DDEE55FF6600A7 /* EventRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventRow.swift; path = EventRow.swift; sourceTree = "<group>"; };
 		AB33CD44EF55AB66CD77EF13 /* FilePickerCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilePickerCoordinator.swift; path = FilePickerCoordinator.swift; sourceTree = "<group>"; };
 		AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilePreviewView.swift; path = FilePreviewView.swift; sourceTree = "<group>"; };
 		9583A57C90DCAB3DC119342E /* ProductCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProductCard.swift; path = ProductCard.swift; sourceTree = "<group>"; };
@@ -136,6 +142,8 @@
 				AA22BB33CC44DD55EE6600A2 /* AddAppointmentSheet.swift */,
 				AB11CD22EF33AB44CD55EF11 /* AddClinicalEntrySheet.swift */,
 				AB22CD33EF44AB55CD66EF12 /* ClinicalEntryDetailView.swift */,
+				EE66FF7700BBCC33DD44EE15 /* AddEventSheet.swift */,
+				EE77FF8811CCDD44EE55FF16 /* EventDetailView.swift */,
 			);
 			name = Sheets;
 			path = Sheets;
@@ -149,6 +157,7 @@
 				CC33DD44EE55FF6600AABB11 /* ClinicalHistoryTabView.swift */,
 				CC44DD55EE55FF6600AABB22 /* ClinicalEntryRow.swift */,
 				DD44EE55FF6600AABB22CC01 /* EventsTabView.swift */,
+				EE88FF9922DDEE55FF6600A7 /* EventRow.swift */,
 				EE55FF6600AABB22CC33DD01 /* FilesTabView.swift */,
 			);
 			name = Tabs;
@@ -381,6 +390,9 @@
 				EE55FF6600AABB22CC33DD44 /* FilesTabView.swift in Sources */,
 				AB11CD22EF33AB44CD55EF01 /* AddClinicalEntrySheet.swift in Sources */,
 				AB22CD33EF44AB55CD66EF02 /* ClinicalEntryDetailView.swift in Sources */,
+				EE66FF7700BBCC33DD44EE05 /* AddEventSheet.swift in Sources */,
+				EE77FF8811CCDD44EE55FF06 /* EventDetailView.swift in Sources */,
+				EE88FF9922DDEE55FF6600B7 /* EventRow.swift in Sources */,
 				AB33CD44EF55AB66CD77EF03 /* FilePickerCoordinator.swift in Sources */,
 				AB44CD55EF66AB77CD88EF04 /* FilePreviewView.swift in Sources */,
 			);
