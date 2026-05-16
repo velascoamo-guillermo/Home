@@ -47,33 +47,36 @@ struct PetDetailView: View {
     }
 
     private var tabPicker: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 0) {
-                ForEach(PetDetailTab.allCases, id: \.self) { tab in
-                    Button {
-                        selectedTab = tab
-                    } label: {
-                        VStack(spacing: 4) {
-                            Image(systemName: tab.icon)
-                                .font(.caption)
-                            Text(tab.rawValue)
-                                .font(.caption2)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .foregroundStyle(selectedTab == tab ? Color.accentColor : Color.secondary)
+        HStack(spacing: 0) {
+            ForEach(PetDetailTab.allCases, id: \.self) { tab in
+                let selected = selectedTab == tab
+                Button {
+                    selectedTab = tab
+                } label: {
+                    VStack(spacing: 5) {
+                        Image(systemName: tab.icon)
+                            .font(.system(size: 15, weight: selected ? .semibold : .regular))
+                        Text(tab.rawValue)
+                            .font(.caption2)
+                            .fontWeight(selected ? .semibold : .regular)
                     }
-                    .overlay(alignment: .bottom) {
-                        if selectedTab == tab {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundStyle(.tint)
-                        }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .foregroundStyle(selected ? Color.accentColor : Color.secondary)
+                }
+                .overlay(alignment: .bottom) {
+                    if selected {
+                        Rectangle()
+                            .frame(height: 2)
+                            .foregroundStyle(.tint)
                     }
                 }
             }
         }
         .background(.bar)
+        .overlay(alignment: .bottom) {
+            Divider()
+        }
     }
 
     @ViewBuilder
