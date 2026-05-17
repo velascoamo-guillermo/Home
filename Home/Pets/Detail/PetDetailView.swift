@@ -95,5 +95,5 @@ struct PetDetailView: View {
     NavigationStack {
         PetDetailView(pet: Pet(name: "Luna", type: "Dog", breed: "Golden Retriever"))
     }
-    .environment(DataStore())
+    .environment(SupabaseStore())
 }
