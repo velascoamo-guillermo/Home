@@ -39,6 +39,7 @@
 		CA00BB11CC22DD33EE44FF05 /* ExtractionResultSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00BB11CC22DD33EE44FF15 /* ExtractionResultSheet.swift */; };
 		CA00BB11CC22DD33EE44FF06 /* ExtractionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00BB11CC22DD33EE44FF16 /* ExtractionService.swift */; };
 		FF55AA66BB77CC88DD99EE01 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF55AA66BB77CC88DD99EE00 /* KeychainService.swift */; };
+		CA11BB22CC33DD44EE55FF01 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11BB22CC33DD44EE55FF00 /* CalendarService.swift */; };
 		SS00AA11BB22CC33DD44EE01 /* SupabaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = SS00AA11BB22CC33DD44EE00 /* SupabaseStore.swift */; };
 		HT00AA11BB22CC33DD44EE02 /* ExtractionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HT00AA11BB22CC33DD44EE12 /* ExtractionServiceTests.swift */; };
 		HT00AA11BB22CC33DD44EE04 /* SupabaseStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HT00AA11BB22CC33DD44EE14 /* SupabaseStoreTests.swift */; };
@@ -84,6 +85,7 @@
 		AB44CD55EF66AB77CD88EF14 /* FilePreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilePreviewView.swift; path = FilePreviewView.swift; sourceTree = "<group>"; };
 		CA00BB11CC22DD33EE44FF15 /* ExtractionResultSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtractionResultSheet.swift; path = ExtractionResultSheet.swift; sourceTree = "<group>"; };
 		CA00BB11CC22DD33EE44FF16 /* ExtractionService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtractionService.swift; path = ExtractionService.swift; sourceTree = "<group>"; };
+		CA11BB22CC33DD44EE55FF00 /* CalendarService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CalendarService.swift; path = CalendarService.swift; sourceTree = "<group>"; };
 		FF55AA66BB77CC88DD99EE00 /* KeychainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeychainService.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		SS00AA11BB22CC33DD44EE00 /* SupabaseStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SupabaseStore.swift; path = SupabaseStore.swift; sourceTree = "<group>"; };
 		HT00AA11BB22CC33DD44EE12 /* ExtractionServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtractionServiceTests.swift; path = ExtractionServiceTests.swift; sourceTree = "<group>"; };
@@ -298,7 +300,8 @@
 		FF55AA66BB77CC88DD99EE10 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				FF55AA66BB77CC88DD99EE00 /* KeychainService.swift */,
+				CA11BB22CC33DD44EE55FF00 /* CalendarService.swift */,
+					FF55AA66BB77CC88DD99EE00 /* KeychainService.swift */,
 				SS00AA11BB22CC33DD44EE00 /* SupabaseStore.swift */,
 			);
 			name = Services;
@@ -504,7 +507,8 @@
 				AB44CD55EF66AB77CD88EF04 /* FilePreviewView.swift in Sources */,
 				CA00BB11CC22DD33EE44FF05 /* ExtractionResultSheet.swift in Sources */,
 				CA00BB11CC22DD33EE44FF06 /* ExtractionService.swift in Sources */,
-				FF55AA66BB77CC88DD99EE01 /* KeychainService.swift in Sources */,
+				CA11BB22CC33DD44EE55FF01 /* CalendarService.swift in Sources */,
+					FF55AA66BB77CC88DD99EE01 /* KeychainService.swift in Sources */,
 				96A6927DAC9046738B759A900327673D /* SupabaseConfig.swift in Sources */,
 				SS00AA11BB22CC33DD44EE01 /* SupabaseStore.swift in Sources */,
 );

@@ -1,5 +1,6 @@
 // Home/Pets/Detail/Tabs/EventsTabView.swift
 import SwiftUI
+import EventKit
 
 struct EventsTabView: View {
     let pet: Pet
@@ -19,7 +20,14 @@ struct EventsTabView: View {
             ForEach(events) { event in
                 Button { selectedEvent = event } label: { EventRow(event: event) }
                     .buttonStyle(.plain)
-                    .swipeActions {
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            Task { await CalendarService.addPetEvent(event, petName: pet.name) }
+                        } label: {
+                            Label("Calendar", systemImage: "calendar.badge.plus")
+                        }.tint(.blue)
+                    }
+                    .swipeActions(edge: .trailing) {
                         Button("Delete", role: .destructive) {
                             Task { try? await store.deleteEvent(event) }
                         }
