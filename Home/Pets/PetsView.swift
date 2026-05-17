@@ -11,6 +11,9 @@ struct PetsView: View {
                 NavigationLink(value: pet) {
                     PetRow(pet: pet)
                 }
+                .swipeActions(edge: .trailing) {
+                    Button("Delete", role: .destructive) { delete(pet) }
+                }
             }
             .navigationTitle("My Pets")
             .navigationDestination(for: Pet.self) { pet in
@@ -27,6 +30,15 @@ struct PetsView: View {
                 AddPetSheet()
             }
         }
+    }
+
+    private func delete(_ pet: Pet) {
+        store.files(for: pet.id).forEach { store.deleteFile($0) }
+        store.data.appointments.removeAll { $0.petId == pet.id }
+        store.data.clinicalEntries.removeAll { $0.petId == pet.id }
+        store.data.events.removeAll { $0.petId == pet.id }
+        store.data.pets.removeAll { $0.id == pet.id }
+        store.save()
     }
 }
 
