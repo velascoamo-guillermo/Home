@@ -11,4 +11,9 @@ struct Appointment: Codable, Identifiable, Hashable {
     var reason: String
     var notes: String
     var status: AppointmentStatus
+
+    enum CodingKeys: String, CodingKey {
+        case id, date, reason, notes, status
+        case petId = "pet_id"
+    }
 }

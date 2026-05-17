@@ -12,7 +12,6 @@ enum EventCategory: String, Codable, CaseIterable, Hashable {
         case .other:      return "note.text"
         }
     }
-
     var label: String { rawValue.capitalized }
 }
 
@@ -24,5 +23,9 @@ struct PetEvent: Codable, Identifiable, Hashable {
     var category: EventCategory
     var notes: String
     var value: String?
-    var fileIds: [UUID]
+
+    enum CodingKeys: String, CodingKey {
+        case id, date, title, category, notes, value
+        case petId = "pet_id"
+    }
 }

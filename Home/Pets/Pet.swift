@@ -5,5 +5,10 @@ struct Pet: Identifiable, Codable, Hashable {
     var name: String
     var type: String
     var breed: String
-    var photoFilename: String? = nil
+    var photoUrl: String? = nil
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, type, breed
+        case photoUrl = "photo_url"
+    }
 }

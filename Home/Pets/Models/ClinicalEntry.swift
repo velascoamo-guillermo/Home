@@ -6,5 +6,9 @@ struct ClinicalEntry: Codable, Identifiable, Hashable {
     var date: Date
     var title: String
     var description: String
-    var fileIds: [UUID]
+
+    enum CodingKeys: String, CodingKey {
+        case id, date, title, description
+        case petId = "pet_id"
+    }
 }

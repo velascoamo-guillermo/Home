@@ -7,4 +7,9 @@ struct Veterinarian: Codable, Identifiable, Hashable {
     var phone: String
     var address: String
     var notes: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, phone, address, notes
+        case clinicName = "clinic_name"
+    }
 }
