@@ -22,5 +22,5 @@ struct MainTabView: View {
 
 #Preview {
     MainTabView()
-        .environment(AuthManager())
+        .environment(DataStore())
 }

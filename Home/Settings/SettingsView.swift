@@ -2,19 +2,12 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(AuthManager.self) private var authManager
     @State private var showApiKeySheet = false
     @State private var hasApiKey: Bool = false
 
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    SettingsRow(icon: "person.circle", title: "Profile", subtitle: "Manage your account")
-                    SettingsRow(icon: "bell", title: "Notifications", subtitle: "Pet reminders & alerts")
-                    SettingsRow(icon: "shield", title: "Privacy", subtitle: "Data & security settings")
-                }
-
                 Section("Integrations") {
                     Button { showApiKeySheet = true } label: {
                         HStack {
@@ -35,17 +28,6 @@ struct SettingsView: View {
                 Section {
                     SettingsRow(icon: "questionmark.circle", title: "Help & Support", subtitle: "Get assistance")
                     SettingsRow(icon: "info.circle", title: "About", subtitle: "App version & info")
-                }
-
-                Section {
-                    Button {
-                        authManager.signOut()
-                    } label: {
-                        HStack {
-                            Image(systemName: "rectangle.portrait.and.arrow.right").foregroundStyle(.red)
-                            Text("Sign Out").foregroundStyle(.red)
-                        }
-                    }
                 }
             }
             .navigationTitle("Settings")
@@ -122,5 +104,4 @@ private struct ApiKeySheet: View {
 
 #Preview {
     SettingsView()
-        .environment(AuthManager())
 }
