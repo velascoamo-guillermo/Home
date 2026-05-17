@@ -10,6 +10,7 @@ struct VetEditSheet: View {
     @State private var clinicName: String = ""
     @State private var phone: String = ""
     @State private var address: String = ""
+    @State private var schedule: String = ""
     @State private var notes: String = ""
 
     var body: some View {
@@ -23,8 +24,12 @@ struct VetEditSheet: View {
                     TextField("Phone", text: $phone).keyboardType(.phonePad)
                     TextField("Address", text: $address)
                 }
+                Section("Schedule") {
+                    TextField("e.g. Mon–Fri 9:00–19:00", text: $schedule, axis: .vertical)
+                        .lineLimit(2...4)
+                }
                 Section("Notes") {
-                    TextField("Specialty, hours...", text: $notes, axis: .vertical).lineLimit(3...6)
+                    TextField("Specialty, emergency line...", text: $notes, axis: .vertical).lineLimit(2...4)
                 }
             }
             .navigationTitle(existing == nil ? "Add Vet" : "Edit Vet")
@@ -36,10 +41,15 @@ struct VetEditSheet: View {
                         let vet = Veterinarian(
                             id: existing?.id ?? UUID(),
                             name: name, clinicName: clinicName,
-                            phone: phone, address: address, notes: notes
+                            phone: phone, address: address,
+                            schedule: schedule, notes: notes
                         )
                         Task {
-                            try? await store.upsertVet(vet)
+                            if existing == nil {
+                                try? await store.addVet(vet)
+                            } else {
+                                try? await store.updateVet(vet)
+                            }
                             dismiss()
                         }
                     }
@@ -49,7 +59,8 @@ struct VetEditSheet: View {
             .onAppear {
                 if let v = existing {
                     name = v.name; clinicName = v.clinicName
-                    phone = v.phone; address = v.address; notes = v.notes
+                    phone = v.phone; address = v.address
+                    schedule = v.schedule; notes = v.notes
                 }
             }
         }

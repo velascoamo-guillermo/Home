@@ -8,7 +8,7 @@ final class SupabaseStore {
     private let client: SupabaseClient
 
     var pets: [Pet] = []
-    var veterinarian: Veterinarian? = nil
+    var veterinarians: [Veterinarian] = []
     var appointments: [Appointment] = []
     var clinicalEntries: [ClinicalEntry] = []
     var events: [PetEvent] = []
@@ -37,7 +37,7 @@ final class SupabaseStore {
             async let pf: [PetFile] = client.from("pet_files").select().execute().value
 
             pets = try await p
-            veterinarian = try await v.first
+            veterinarians = try await v
             appointments = try await a
             clinicalEntries = try await ce
             events = try await pe
@@ -71,9 +71,21 @@ final class SupabaseStore {
 
     // MARK: - Vet
 
-    func upsertVet(_ vet: Veterinarian) async throws {
-        try await client.from("veterinarian").upsert(vet).execute()
-        veterinarian = vet
+    func addVet(_ vet: Veterinarian) async throws {
+        try await client.from("veterinarian").insert(vet).execute()
+        veterinarians.append(vet)
+    }
+
+    func updateVet(_ vet: Veterinarian) async throws {
+        try await client.from("veterinarian").update(vet).eq("id", value: vet.id).execute()
+        if let i = veterinarians.firstIndex(where: { $0.id == vet.id }) {
+            veterinarians[i] = vet
+        }
+    }
+
+    func deleteVet(_ vet: Veterinarian) async throws {
+        try await client.from("veterinarian").delete().eq("id", value: vet.id).execute()
+        veterinarians.removeAll { $0.id == vet.id }
     }
 
     // MARK: - Appointments

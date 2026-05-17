@@ -4,56 +4,70 @@ import SwiftUI
 struct VetTabView: View {
     let pet: Pet
     @Environment(SupabaseStore.self) private var store
-    @State private var showEdit = false
+    @State private var showAdd = false
+    @State private var editingVet: Veterinarian? = nil
 
     var body: some View {
-        ScrollView {
-            if let vet = store.veterinarian {
-                VetCard(vet: vet).padding()
-            } else {
+        List {
+            if store.veterinarians.isEmpty {
                 ContentUnavailableView(
-                    "No Veterinarian",
+                    "No Veterinarians",
                     systemImage: "stethoscope",
                     description: Text("Add your vet's contact information.")
                 )
-                .padding(.top, 60)
+                .listRowBackground(Color.clear)
+            }
+            ForEach(store.veterinarians) { vet in
+                VetRow(vet: vet)
+                    .onTapGesture { editingVet = vet }
+                    .swipeActions(edge: .trailing) {
+                        Button("Delete", role: .destructive) {
+                            Task { try? await store.deleteVet(vet) }
+                        }
+                    }
             }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(store.veterinarian == nil ? "Add Vet" : "Edit") { showEdit = true }
+                Button("Add Vet", systemImage: "plus") { showAdd = true }
             }
         }
-        .sheet(isPresented: $showEdit) {
-            VetEditSheet(existing: store.veterinarian)
-        }
+        .sheet(isPresented: $showAdd) { VetEditSheet(existing: nil) }
+        .sheet(item: $editingVet) { vet in VetEditSheet(existing: vet) }
     }
 }
 
-private struct VetCard: View {
+private struct VetRow: View {
     let vet: Veterinarian
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Label(vet.name, systemImage: "person.fill").font(.headline)
-            Label(vet.clinicName, systemImage: "building.2.fill")
-                .font(.subheadline).foregroundStyle(.secondary)
-            Divider()
-            if !vet.phone.isEmpty {
-                Link(destination: URL(string: "tel:\(vet.phone.replacingOccurrences(of: " ", with: ""))")!) {
-                    Label(vet.phone, systemImage: "phone.fill")
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(vet.name).font(.headline)
+                    Text(vet.clinicName).font(.subheadline).foregroundStyle(.secondary)
                 }
+                Spacer()
+                Image(systemName: "chevron.right").font(.caption2).foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)
             }
-            if !vet.address.isEmpty {
-                Link(destination: URL(string: "maps://?q=\(vet.address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")!) {
-                    Label(vet.address, systemImage: "map.fill")
-                }
-            }
-            if !vet.notes.isEmpty {
+            if !vet.phone.isEmpty || !vet.address.isEmpty || !vet.schedule.isEmpty {
                 Divider()
-                Text(vet.notes).font(.caption).foregroundStyle(.secondary)
+                if !vet.phone.isEmpty {
+                    Link(destination: URL(string: "tel:\(vet.phone.replacingOccurrences(of: " ", with: ""))")!) {
+                        Label(vet.phone, systemImage: "phone.fill").font(.subheadline)
+                    }
+                }
+                if !vet.address.isEmpty {
+                    Link(destination: URL(string: "maps://?q=\(vet.address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")!) {
+                        Label(vet.address, systemImage: "map.fill").font(.subheadline)
+                    }
+                }
+                if !vet.schedule.isEmpty {
+                    Label(vet.schedule, systemImage: "clock").font(.caption).foregroundStyle(.secondary)
+                }
             }
         }
-        .padding()
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .padding(.vertical, 4)
     }
 }
