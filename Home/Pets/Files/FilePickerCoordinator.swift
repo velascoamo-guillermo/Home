@@ -4,7 +4,7 @@ import PhotosUI
 import VisionKit
 
 struct FilePickerCoordinator: View {
-    var onPick: (Data, String) throws -> Void
+    var onPick: (Data, String) async throws -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var photoPickerItem: PhotosPickerItem? = nil
     @State private var showCamera = false
@@ -31,7 +31,7 @@ struct FilePickerCoordinator: View {
             guard let item else { return }
             Task {
                 if let data = try? await item.loadTransferable(type: Data.self) {
-                    try? onPick(data, "jpg")
+                    try? await onPick(data, "jpg")
                     await MainActor.run { dismiss() }
                 }
             }
@@ -39,21 +39,25 @@ struct FilePickerCoordinator: View {
         .fullScreenCover(isPresented: $showCamera) {
             CameraPicker { image in
                 if let data = image.jpegData(compressionQuality: 0.8) {
-                    try? onPick(data, "jpg")
+                    Task { try? await onPick(data, "jpg") }
                 }
                 dismiss()
             }
         }
         .sheet(isPresented: $showDocPicker) {
             DocumentPicker { data in
-                try? onPick(data, "pdf")
-                dismiss()
+                Task {
+                    try? await onPick(data, "pdf")
+                    dismiss()
+                }
             }
         }
         .sheet(isPresented: $showScanner) {
             ScannerView { pdfData in
-                try? onPick(pdfData, "pdf")
-                dismiss()
+                Task {
+                    try? await onPick(pdfData, "pdf")
+                    dismiss()
+                }
             }
         }
     }
@@ -63,27 +67,21 @@ struct FilePickerCoordinator: View {
 
 struct CameraPicker: UIViewControllerRepresentable {
     var onCapture: (UIImage) -> Void
-
     func makeCoordinator() -> Coordinator { Coordinator(onCapture: onCapture) }
-
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let vc = UIImagePickerController()
         vc.sourceType = .camera
         vc.delegate = context.coordinator
         return vc
     }
-
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-
     class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         let onCapture: (UIImage) -> Void
         init(onCapture: @escaping (UIImage) -> Void) { self.onCapture = onCapture }
-
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage { onCapture(image) }
             picker.dismiss(animated: true)
         }
-
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             picker.dismiss(animated: true)
         }
@@ -94,21 +92,16 @@ struct CameraPicker: UIViewControllerRepresentable {
 
 struct DocumentPicker: UIViewControllerRepresentable {
     var onPick: (Data) -> Void
-
     func makeCoordinator() -> Coordinator { Coordinator(onPick: onPick) }
-
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.pdf, .image, .data])
         vc.delegate = context.coordinator
         return vc
     }
-
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
-
     class Coordinator: NSObject, UIDocumentPickerDelegate {
         let onPick: (Data) -> Void
         init(onPick: @escaping (Data) -> Void) { self.onPick = onPick }
-
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first else { return }
             guard url.startAccessingSecurityScopedResource() else { return }
@@ -123,21 +116,16 @@ struct DocumentPicker: UIViewControllerRepresentable {
 
 struct ScannerView: UIViewControllerRepresentable {
     var onScan: (Data) -> Void
-
     func makeCoordinator() -> Coordinator { Coordinator(onScan: onScan) }
-
     func makeUIViewController(context: Context) -> VNDocumentCameraViewController {
         let vc = VNDocumentCameraViewController()
         vc.delegate = context.coordinator
         return vc
     }
-
     func updateUIViewController(_ uiViewController: VNDocumentCameraViewController, context: Context) {}
-
     class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
         let onScan: (Data) -> Void
         init(onScan: @escaping (Data) -> Void) { self.onScan = onScan }
-
         func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
             let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: CGSize(width: 612, height: 792)))
             let data = renderer.pdfData { ctx in

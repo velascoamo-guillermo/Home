@@ -2,9 +2,10 @@
 import SwiftUI
 
 struct ExtractionResultSheet: View {
+    let fileURL: URL
     let file: PetFile
     let pet: Pet
-    @Environment(DataStore.self) private var store
+    @Environment(SupabaseStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
     @State private var result: ExtractionResult? = nil
@@ -28,8 +29,7 @@ struct ExtractionResultSheet: View {
                         "Extraction Failed",
                         systemImage: "exclamationmark.triangle",
                         description: Text(error)
-                    )
-                    .padding()
+                    ).padding()
                 } else if let result {
                     extractionForm(result: result)
                 }
@@ -57,8 +57,7 @@ struct ExtractionResultSheet: View {
                 }
             }
             Section("Diagnosis / Findings") {
-                TextField("Diagnosis", text: $editedDiagnosis, axis: .vertical)
-                    .lineLimit(2...5)
+                TextField("Diagnosis", text: $editedDiagnosis, axis: .vertical).lineLimit(2...5)
             }
             if !result.testResults.isEmpty {
                 Section("Test Results") {
@@ -73,8 +72,7 @@ struct ExtractionResultSheet: View {
                 }
             }
             Section("Recommendations") {
-                TextField("Recommendations", text: $editedRecommendations, axis: .vertical)
-                    .lineLimit(2...5)
+                TextField("Recommendations", text: $editedRecommendations, axis: .vertical).lineLimit(2...5)
             }
         }
         .onAppear {
@@ -86,7 +84,7 @@ struct ExtractionResultSheet: View {
     private func extract() async {
         isLoading = true
         do {
-            result = try await ExtractionService.extract(fileURL: store.fileURL(for: file), petName: pet.name)
+            result = try await ExtractionService.extract(fileURL: fileURL, petName: pet.name)
         } catch {
             self.error = error.localizedDescription
         }
@@ -101,15 +99,17 @@ struct ExtractionResultSheet: View {
             title: editedDiagnosis.isEmpty ? "Vet Report" : String(editedDiagnosis.prefix(50)),
             description: [editedDiagnosis,
                           result.medications.isEmpty ? "" : "Medications: \(result.medications.joined(separator: ", "))",
-                          editedRecommendations].filter { !$0.isEmpty }.joined(separator: "\n\n"),
-            fileIds: [file.id]
+                          editedRecommendations].filter { !$0.isEmpty }.joined(separator: "\n\n")
         )
-        // Relink file to this clinical entry
-        if let i = store.data.files.firstIndex(where: { $0.id == file.id }) {
-            store.data.files[i].linkedTo = .clinicalEntry(entry.id)
+        Task {
+            try? await store.addClinicalEntry(entry)
+            if let i = store.files.firstIndex(where: { $0.id == file.id }) {
+                var updated = store.files[i]
+                updated.linkedToType = "clinicalEntry"
+                updated.linkedToId = entry.id
+                try? await store.updateFileLink(updated)
+            }
+            dismiss()
         }
-        store.data.clinicalEntries.append(entry)
-        store.save()
-        dismiss()
     }
 }

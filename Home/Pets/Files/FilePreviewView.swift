@@ -1,24 +1,27 @@
+// Home/Pets/Files/FilePreviewView.swift
 import SwiftUI
 import PDFKit
 
 struct FilePreviewView: View {
     let file: PetFile
     let pet: Pet
-    @Environment(DataStore.self) private var store
+    @Environment(SupabaseStore.self) private var store
     @State private var showExtraction = false
 
-    private var fileURL: URL { store.fileURL(for: file) }
+    private var fileURL: URL { store.fileUrl(for: file) }
     private var canExtract: Bool { file.sourceType == .document || file.sourceType == .scan }
 
     var body: some View {
         NavigationStack {
             Group {
-                if file.sourceType == .photo, let image = loadImage() {
+                if file.sourceType == .photo {
                     ScrollView([.horizontal, .vertical]) {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .padding()
+                        AsyncImage(url: fileURL) { image in
+                            image.resizable().scaledToFit()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .padding()
                     }
                 } else if file.sourceType == .document || file.sourceType == .scan {
                     PDFKitView(url: fileURL)
@@ -27,7 +30,7 @@ struct FilePreviewView: View {
                         description: Text("This file type cannot be previewed."))
                 }
             }
-            .navigationTitle(file.filename)
+            .navigationTitle(file.displayName)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 if canExtract {
@@ -39,26 +42,19 @@ struct FilePreviewView: View {
                 }
             }
             .sheet(isPresented: $showExtraction) {
-                ExtractionResultSheet(file: file, pet: pet)
+                ExtractionResultSheet(fileURL: fileURL, file: file, pet: pet)
             }
         }
-    }
-
-    private func loadImage() -> UIImage? {
-        guard let data = try? Data(contentsOf: fileURL) else { return nil }
-        return UIImage(data: data)
     }
 }
 
 struct PDFKitView: UIViewRepresentable {
     let url: URL
-
     func makeUIView(context: Context) -> PDFView {
         let view = PDFView()
         view.autoScales = true
         view.document = PDFDocument(url: url)
         return view
     }
-
     func updateUIView(_ uiView: PDFView, context: Context) {}
 }
