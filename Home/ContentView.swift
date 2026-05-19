@@ -10,11 +10,11 @@ struct ContentView: View {
                 ProgressView("Loading…")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let error = store.loadError {
-                ContentUnavailableView(
-                    "Connection Error",
-                    systemImage: "wifi.slash",
-                    description: Text(error)
-                ) {
+                ContentUnavailableView {
+                    Label("Connection Error", systemImage: "wifi.slash")
+                } description: {
+                    Text(error)
+                } actions: {
                     Button("Retry") {
                         Task { await store.loadAll() }
                     }

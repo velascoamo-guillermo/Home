@@ -19,7 +19,8 @@ final class SupabaseStore {
     init() {
         self.client = SupabaseClient(
             supabaseURL: SupabaseConfig.url,
-            supabaseKey: SupabaseConfig.anonKey
+            supabaseKey: SupabaseConfig.anonKey,
+            options: .init(auth: .init(emitLocalSessionAsInitialSession: true))
         )
     }
 
@@ -182,7 +183,8 @@ final class SupabaseStore {
     }
 
     func fileUrl(for file: PetFile) -> URL {
-        client.storage.from("pet-files").getPublicURL(path: file.storagePath)
+        // storagePath is always a valid path we constructed — getPublicURL only throws on malformed input
+        try! client.storage.from("pet-files").getPublicURL(path: file.storagePath)
     }
 
     // MARK: - In-memory filters
