@@ -192,6 +192,17 @@ final class SupabaseStore {
 
     // MARK: - In-memory filters
 
+    var homeTimeline: [HomeItem] {
+        let appts = appointments
+            .filter { $0.status == .upcoming }
+            .compactMap { appt -> HomeItem? in
+                guard let pet = pets.first(where: { $0.id == appt.petId }) else { return nil }
+                return .appointment(appt, pet)
+            }
+        let tasks = householdTasks.map { HomeItem.task($0) }
+        return (appts + tasks).sorted { $0.dueDate < $1.dueDate }
+    }
+
     func appointments(for petId: UUID) -> [Appointment] {
         appointments.filter { $0.petId == petId }
     }

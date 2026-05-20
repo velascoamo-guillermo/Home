@@ -3,7 +3,7 @@ import Testing
 import Foundation
 @testable import Home
 
-@Suite("ExtractionService") struct ExtractionServiceTests {
+@Suite("ExtractionService") @MainActor struct ExtractionServiceTests {
 
     @Test("parses well-formed Claude JSON response")
     func parseWellFormed() throws {

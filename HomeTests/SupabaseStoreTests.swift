@@ -3,7 +3,7 @@ import Testing
 import Foundation
 @testable import Home
 
-@Suite("SupabaseStore filters") struct SupabaseStoreTests {
+@Suite("SupabaseStore filters") @MainActor struct SupabaseStoreTests {
 
     @Test("appointments(for:) returns only matching petId")
     func appointmentsFilter() {
@@ -32,5 +32,45 @@ import Foundation
         #expect(store.files(for: petId, linkedToType: "standalone").count == 1)
         #expect(store.files(for: petId).count == 2)
         #expect(store.files(for: UUID()).count == 0)
+    }
+
+    @Test("homeTimeline sorts appointments and tasks by dueDate")
+    func homeTimelineSorted() {
+        let store = SupabaseStore()
+        let pet = Pet(name: "Rex", type: "dog", breed: "lab")
+        store.pets = [pet]
+
+        let sooner = Date.now.addingTimeInterval(3600)
+        let later  = Date.now.addingTimeInterval(7200)
+
+        store.appointments   = [Appointment(petId: pet.id, date: later,  reason: "checkup", notes: "", status: .upcoming)]
+        store.householdTasks = [HouseholdTask(title: "Filter", icon: "drop", intervalDays: 90, nextDueDate: sooner)]
+
+        let timeline = store.homeTimeline
+        #expect(timeline.count == 2)
+        #expect(timeline[0].dueDate <= timeline[1].dueDate)
+    }
+
+    @Test("homeTimeline excludes done and cancelled appointments")
+    func homeTimelineExcludesNonUpcoming() {
+        let store = SupabaseStore()
+        let pet = Pet(name: "Rex", type: "dog", breed: "lab")
+        store.pets = [pet]
+        store.appointments = [
+            Appointment(petId: pet.id, date: .now, reason: "done",      notes: "", status: .done),
+            Appointment(petId: pet.id, date: .now, reason: "cancelled",  notes: "", status: .cancelled),
+            Appointment(petId: pet.id, date: .now, reason: "upcoming",   notes: "", status: .upcoming)
+        ]
+        #expect(store.homeTimeline.count == 1)
+    }
+
+    @Test("homeTimeline excludes appointment with missing pet")
+    func homeTimelineDropsOrphanedAppointment() {
+        let store = SupabaseStore()
+        store.pets = []
+        store.appointments = [
+            Appointment(petId: UUID(), date: .now, reason: "orphan", notes: "", status: .upcoming)
+        ]
+        #expect(store.homeTimeline.count == 0)
     }
 }
