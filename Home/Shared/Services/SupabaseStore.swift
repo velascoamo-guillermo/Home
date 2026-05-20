@@ -13,6 +13,7 @@ final class SupabaseStore {
     var clinicalEntries: [ClinicalEntry] = []
     var events: [PetEvent] = []
     var files: [PetFile] = []
+    var householdTasks: [HouseholdTask] = []
     var isLoading = false
     var loadError: String? = nil
 
@@ -36,6 +37,7 @@ final class SupabaseStore {
             async let ce: [ClinicalEntry] = client.from("clinical_entries").select().execute().value
             async let pe: [PetEvent] = client.from("pet_events").select().execute().value
             async let pf: [PetFile] = client.from("pet_files").select().execute().value
+            async let ht: [HouseholdTask] = client.from("household_tasks").select().execute().value
 
             pets = try await p
             veterinarians = try await v
@@ -43,6 +45,7 @@ final class SupabaseStore {
             clinicalEntries = try await ce
             events = try await pe
             files = try await pf
+            householdTasks = try await ht
         } catch {
             loadError = error.localizedDescription
         }
@@ -208,5 +211,24 @@ final class SupabaseStore {
             if let id = linkedToId, f.linkedToId != id { return false }
             return true
         }
+    }
+
+    // MARK: - Household Tasks
+
+    func addTask(_ task: HouseholdTask) async throws {
+        try await client.from("household_tasks").insert(task).execute()
+        householdTasks.append(task)
+    }
+
+    func updateTask(_ task: HouseholdTask) async throws {
+        try await client.from("household_tasks").update(task).eq("id", value: task.id).execute()
+        if let i = householdTasks.firstIndex(where: { $0.id == task.id }) {
+            householdTasks[i] = task
+        }
+    }
+
+    func deleteTask(_ task: HouseholdTask) async throws {
+        try await client.from("household_tasks").delete().eq("id", value: task.id).execute()
+        householdTasks.removeAll { $0.id == task.id }
     }
 }
