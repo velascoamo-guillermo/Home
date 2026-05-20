@@ -40,6 +40,8 @@
 		CC33DD44EE55FF6600AABB22 /* ClinicalHistoryTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC33DD44EE55FF6600AABB11 /* ClinicalHistoryTabView.swift */; };
 		CC44DD55EE55FF6600AABB33 /* ClinicalEntryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC44DD55EE55FF6600AABB22 /* ClinicalEntryRow.swift */; };
 		CD57016D61746F8775546D4B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C806DCF5034FAB66D7D2B8 /* HomeView.swift */; };
+		HM00AA11BB22CC33DD44EE11 /* HomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = HM00AA11BB22CC33DD44EE01 /* HomeItem.swift */; };
+		HM00AA11BB22CC33DD44EE12 /* HouseholdTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = HM00AA11BB22CC33DD44EE02 /* HouseholdTask.swift */; };
 		DD44EE55FF6600AABB22CC33 /* EventsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD44EE55FF6600AABB22CC01 /* EventsTabView.swift */; };
 		E2EC81F2A4FA6DC413810AFC /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBBAB7C0182E30253E98F35 /* Product.swift */; };
 		EE55FF6600AABB22CC33DD44 /* FilesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE55FF6600AABB22CC33DD01 /* FilesTabView.swift */; };
@@ -69,6 +71,8 @@
 
 /* Begin PBXFileReference section */
 		06C806DCF5034FAB66D7D2B8 /* HomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		HM00AA11BB22CC33DD44EE01 /* HomeItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeItem.swift; sourceTree = "<group>"; };
+		HM00AA11BB22CC33DD44EE02 /* HouseholdTask.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HouseholdTask.swift; sourceTree = "<group>"; };
 		099296661BA18AD804A8176A /* SettingsRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsRow.swift; sourceTree = "<group>"; };
 		1C6F1DB6BCF9455356B9FAB7 /* ShopView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		2C2D908018579E74C4F6DE3F /* MainTabView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -158,6 +162,8 @@
 			isa = PBXGroup;
 			children = (
 				06C806DCF5034FAB66D7D2B8 /* HomeView.swift */,
+				HM00AA11BB22CC33DD44EE01 /* HomeItem.swift */,
+				HM00AA11BB22CC33DD44EE02 /* HouseholdTask.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -447,6 +453,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD57016D61746F8775546D4B /* HomeView.swift in Sources */,
+				HM00AA11BB22CC33DD44EE11 /* HomeItem.swift in Sources */,
+				HM00AA11BB22CC33DD44EE12 /* HouseholdTask.swift in Sources */,
 				5B333B1BDEF4E93AC16D9136 /* MainTabView.swift in Sources */,
 				F590EDE5C7BE12EF7ED81623 /* Pet.swift in Sources */,
 				81D685B707C9582581ADFB87 /* PetsView.swift in Sources */,
