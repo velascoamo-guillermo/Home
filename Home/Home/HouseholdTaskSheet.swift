@@ -89,8 +89,8 @@ struct HouseholdTaskSheet: View {
             } else {
                 try? await store.addTask(task)
             }
+            dismiss()
         }
-        dismiss()
     }
 
     static let iconOptions: [String] = [
