@@ -20,7 +20,7 @@ struct SFSymbolPicker: View {
                                 .aspectRatio(1, contentMode: .fit)
                                 .foregroundStyle(selection == sym ? .white : .primary)
                                 .background(selection == sym ? Color.accentColor : Color(.secondarySystemFill))
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .clipShape(.rect(cornerRadius: 10))
                         }
                         .accessibilityLabel(sym)
                     }

@@ -45,7 +45,7 @@ struct HouseholdTaskSheet: View {
                                 .foregroundStyle(.primary)
                             Spacer()
                             Image(systemName: icon)
-                                .foregroundStyle(.accent)
+                                .foregroundStyle(.tint)
                             Text(sectionLabel)
                                 .foregroundStyle(.secondary)
                             Image(systemName: "chevron.right")

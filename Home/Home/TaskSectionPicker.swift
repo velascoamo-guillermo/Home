@@ -74,13 +74,13 @@ struct TaskSectionPicker: View {
             HStack {
                 Image(systemName: icon)
                     .frame(width: 28)
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(.tint)
                 Text(name)
                     .foregroundStyle(.primary)
                 Spacer()
                 if isSelected {
                     Image(systemName: "checkmark")
-                        .foregroundStyle(.accent)
+                        .foregroundStyle(.tint)
                 }
             }
         }
@@ -113,7 +113,7 @@ private struct AddCustomSectionSheet: View {
                                 .foregroundStyle(.primary)
                             Spacer()
                             Image(systemName: icon)
-                                .foregroundStyle(.accent)
+                                .foregroundStyle(.tint)
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
