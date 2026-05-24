@@ -1,9 +1,9 @@
-// Home/Pets/PetsView.swift
 import SwiftUI
 
 struct PetsView: View {
     @Environment(SupabaseStore.self) private var store
     @State private var showAddPet = false
+    @Namespace private var heroNamespace
 
     var body: some View {
         NavigationStack {
@@ -11,6 +11,7 @@ struct PetsView: View {
                 NavigationLink(value: pet) {
                     PetRow(pet: pet)
                 }
+                .matchedTransitionSource(id: pet.id, in: heroNamespace)
                 .swipeActions(edge: .trailing) {
                     Button("Delete", role: .destructive) {
                         Task { try? await store.deletePet(pet) }
@@ -20,6 +21,7 @@ struct PetsView: View {
             .navigationTitle("My Pets")
             .navigationDestination(for: Pet.self) { pet in
                 PetDetailView(pet: pet)
+                    .navigationTransition(.zoom(sourceID: pet.id, in: heroNamespace))
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -37,6 +39,8 @@ private struct AddPetSheet: View {
     @State private var name = ""
     @State private var type = "Dog"
     @State private var breed = ""
+    @State private var hasBirthday = false
+    @State private var birthday = Date()
 
     var body: some View {
         NavigationStack {
@@ -48,6 +52,14 @@ private struct AddPetSheet: View {
                     Text("Other").tag("Other")
                 }
                 TextField("Breed", text: $breed)
+                Section {
+                    Toggle("Add Birthday", isOn: $hasBirthday)
+                    if hasBirthday {
+                        DatePicker("Birthday", selection: $birthday,
+                                   in: ...Date.now,
+                                   displayedComponents: .date)
+                    }
+                }
             }
             .navigationTitle("Add Pet")
             .navigationBarTitleDisplayMode(.inline)
@@ -55,7 +67,8 @@ private struct AddPetSheet: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        let pet = Pet(name: name, type: type, breed: breed)
+                        let pet = Pet(name: name, type: type, breed: breed,
+                                      birthday: hasBirthday ? birthday : nil)
                         Task {
                             try? await store.addPet(pet)
                             dismiss()
