@@ -25,6 +25,7 @@ struct PetDetailView: View {
     @State private var selectedTab: PetDetailTab = .vet
     @State private var photoPickerItem: PhotosPickerItem? = nil
     @State private var isUploadingPhoto = false
+    @State private var uploadError: String? = nil
 
     private var currentPet: Pet {
         store.pets.first(where: { $0.id == pet.id }) ?? pet
@@ -42,11 +43,32 @@ struct PetDetailView: View {
             guard let item else { return }
             Task {
                 isUploadingPhoto = true
-                if let data = try? await item.loadTransferable(type: Data.self) {
-                    try? await store.updatePetPhoto(currentPet, imageData: data)
+                defer {
+                    isUploadingPhoto = false
+                    photoPickerItem = nil
                 }
-                isUploadingPhoto = false
-                photoPickerItem = nil
+                do {
+                    guard let data = try? await item.loadTransferable(type: Data.self),
+                          let uiImage = UIImage(data: data),
+                          let compressed = uiImage.resized(maxDimension: 512).jpegData(compressionQuality: 0.8)
+                    else {
+                        uploadError = "Could not read the selected photo."
+                        return
+                    }
+                    try await store.updatePetPhoto(currentPet, imageData: compressed)
+                } catch {
+                    uploadError = error.localizedDescription
+                }
+            }
+        }
+        .alert("Upload Failed", isPresented: Binding(
+            get: { uploadError != nil },
+            set: { if !$0 { uploadError = nil } }
+        )) {
+            Button("OK") { uploadError = nil }
+        } message: {
+            if let msg = uploadError {
+                Text(msg)
             }
         }
     }
@@ -55,9 +77,7 @@ struct PetDetailView: View {
         VStack(spacing: 8) {
             PhotosPicker(selection: $photoPickerItem, matching: .images) {
                 ZStack {
-                    petPhoto
-                        .frame(width: 84, height: 84)
-                        .clipShape(.circle)
+                    PetAvatarView(pet: currentPet, size: 84)
 
                     if isUploadingPhoto {
                         Circle()
@@ -93,29 +113,6 @@ struct PetDetailView: View {
         }
         .padding(.top, 16)
         .padding(.bottom, 12)
-    }
-
-    @ViewBuilder
-    private var petPhoto: some View {
-        if let urlString = currentPet.photoUrl, let url = URL(string: urlString) {
-            AsyncImage(url: url) { image in
-                image.resizable().scaledToFill()
-            } placeholder: {
-                iconPlaceholder
-            }
-        } else {
-            iconPlaceholder
-        }
-    }
-
-    private var iconPlaceholder: some View {
-        Circle()
-            .fill(.tint.opacity(0.12))
-            .overlay {
-                Image(systemName: currentPet.type == "Dog" ? "dog.fill" : "cat.fill")
-                    .font(.system(size: 34))
-                    .foregroundStyle(.tint)
-            }
     }
 
     private var tabPicker: some View {
