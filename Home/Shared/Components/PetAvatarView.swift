@@ -7,10 +7,13 @@ struct PetAvatarView: View {
     var body: some View {
         Group {
             if let urlString = pet.photoUrl, let url = URL(string: urlString) {
-                AsyncImage(url: url) { image in
-                    image.resizable().scaledToFill()
-                } placeholder: {
-                    placeholder
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable().scaledToFill()
+                    default:
+                        placeholder
+                    }
                 }
             } else {
                 placeholder
@@ -20,11 +23,19 @@ struct PetAvatarView: View {
         .clipShape(.circle)
     }
 
+    private var symbolName: String {
+        switch pet.type {
+        case "Dog": "dog.fill"
+        case "Cat": "cat.fill"
+        default:    "pawprint.fill"
+        }
+    }
+
     private var placeholder: some View {
         Circle()
             .fill(.tint.opacity(0.12))
             .overlay {
-                Image(systemName: pet.type == "Dog" ? "dog.fill" : "cat.fill")
+                Image(systemName: symbolName)
                     .font(.system(size: size * 0.4))
                     .foregroundStyle(.tint)
             }
