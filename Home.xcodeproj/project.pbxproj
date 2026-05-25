@@ -32,6 +32,7 @@
 		AD28BC8FE3FF44A7A23C3ABE /* PetEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A61C82CA7D4580AEE3FD8F /* PetEvent.swift */; };
 		BB22CC33DD44EE55FF6600AA /* AppointmentsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB22CC33DD44EE55FF6600A1 /* AppointmentsTabView.swift */; };
 		BE50151A59558186C1FD92D1 /* PetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0EC17349AAB28CC54A5CB /* PetRow.swift */; };
+		00B2E6DC3F934773A9D00249 /* PetAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7176104FF64E3885D42B3C /* PetAvatarView.swift */; };
 		C1A823780AE3489A95BE163E /* PetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D97A7920684FC9B46E5FCE /* PetDetailView.swift */; };
 		C5FC049B579BEC4CBF8EC041 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1794F5A736E951E42FC707 /* ContentView.swift */; };
 		CA00BB11CC22DD33EE44FF05 /* ExtractionResultSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00BB11CC22DD33EE44FF15 /* ExtractionResultSheet.swift */; };
@@ -90,6 +91,7 @@
 		2C2D908018579E74C4F6DE3F /* MainTabView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		2C6856914DFD42828E88B77E /* Veterinarian.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Veterinarian.swift; sourceTree = "<group>"; };
 		2FD0EC17349AAB28CC54A5CB /* PetRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PetRow.swift; sourceTree = "<group>"; };
+		AB7176104FF64E3885D42B3C /* PetAvatarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PetAvatarView.swift; sourceTree = "<group>"; };
 		507823C42FBCF3AF0042E71E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		507823C52FBCF4BD0042E71E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		50F3CD802FB7714C00238D41 /* Home.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Home.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -333,6 +335,7 @@
 			isa = PBXGroup;
 			children = (
 				B69A10084EFE887518B77FB0 /* FeatureCard.swift */,
+				AB7176104FF64E3885D42B3C /* PetAvatarView.swift */,
 				2FD0EC17349AAB28CC54A5CB /* PetRow.swift */,
 				9583A57C90DCAB3DC119342E /* ProductCard.swift */,
 				099296661BA18AD804A8176A /* SettingsRow.swift */,
@@ -494,6 +497,7 @@
 				81D685B707C9582581ADFB87 /* PetsView.swift in Sources */,
 				9B44E1E4D8E57A4A982A2B1A /* SettingsView.swift in Sources */,
 				2B49E3B0A73264B5D0EED88A /* FeatureCard.swift in Sources */,
+				00B2E6DC3F934773A9D00249 /* PetAvatarView.swift in Sources */,
 				BE50151A59558186C1FD92D1 /* PetRow.swift in Sources */,
 				1DFF9B707982ABA4CB1FFA72 /* ProductCard.swift in Sources */,
 				F17684685F480FFE091A4FC9 /* SettingsRow.swift in Sources */,
