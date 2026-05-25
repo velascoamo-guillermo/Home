@@ -17,6 +17,7 @@ import UIKit
         let resized = image.resized(maxDimension: 512)
         #expect(resized.size.width == 200)
         #expect(resized.size.height == 150)
+        #expect(resized === image)
     }
 
     @Test("large image is scaled so longest side equals maxDimension")
