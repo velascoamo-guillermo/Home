@@ -1,44 +1,79 @@
 import SwiftUI
 import PhotosUI
 
-enum PetDetailTab: String, CaseIterable {
-    case vet = "Vet"
-    case appointments = "Appointments"
-    case history = "History"
-    case events = "Events"
-    case files = "Files"
-
-    var icon: String {
-        switch self {
-        case .vet:          return "stethoscope"
-        case .appointments: return "calendar"
-        case .history:      return "clock.arrow.circlepath"
-        case .events:       return "list.bullet"
-        case .files:        return "folder"
-        }
-    }
-}
-
 struct PetDetailView: View {
     let pet: Pet
     @Environment(SupabaseStore.self) private var store
-    @State private var selectedTab: PetDetailTab = .vet
+    @Environment(\.dismiss) private var dismiss
     @State private var photoPickerItem: PhotosPickerItem? = nil
     @State private var isUploadingPhoto = false
     @State private var uploadError: String? = nil
+    @State private var selectedSection: PetSection?
 
     private var currentPet: Pet {
         store.pets.first(where: { $0.id == pet.id }) ?? pet
     }
 
+    private var ageString: String? {
+        guard let birthday = currentPet.birthday else { return nil }
+        let comps = Calendar.current.dateComponents([.year, .month], from: birthday, to: .now)
+        if let y = comps.year, y > 0 { return "\(y) yr\(y == 1 ? "" : "s")" }
+        if let m = comps.month { return "\(m) mo" }
+        return nil
+    }
+
     var body: some View {
-        VStack(spacing: 0) {
-            petHeader
-            tabPicker
-            tabContent
+        ZStack {
+            petBackground
+            LinearGradient(
+                colors: [.clear, .black.opacity(0.6)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+
+            VStack(spacing: 12) {
+                Spacer()
+                petNameHeader
+                if ageString != nil || currentPet.birthday != nil {
+                    statsRow
+                }
+                sectionGrid
+                    .padding(.bottom, 8)
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
         }
-        .navigationTitle(currentPet.name)
+        .sheet(item: $selectedSection) { section in
+            NavigationStack {
+                switch section {
+                case .vet:          VetTabView(pet: currentPet)
+                case .appointments: AppointmentsTabView(pet: currentPet)
+                case .history:      ClinicalHistoryTabView(pet: currentPet)
+                case .events:       EventsTabView(pet: currentPet)
+                case .files:        FilesTabView(pet: currentPet)
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "chevron.left")
+                            .fontWeight(.semibold)
+                        Text("My Pets")
+                    }
+                    .font(.body)
+                    .foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.4), radius: 2, y: 1)
+                }
+            }
+        }
         .onChange(of: photoPickerItem) { _, item in
             guard let item else { return }
             Task {
@@ -52,20 +87,16 @@ struct PetDetailView: View {
                         uploadError = "Could not read the selected photo."
                         return
                     }
-
-                    // Resize and encode off the main actor — UIGraphicsImageRenderer is thread-safe since iOS 10
                     let compressResult = await Task.detached(priority: .userInitiated) {
                         guard let uiImage = UIImage(data: data),
                               let compressed = uiImage.resized(maxDimension: 512).jpegData(compressionQuality: 0.8)
                         else { return Data?.none }
                         return compressed
                     }.value
-
                     guard let compressed = compressResult else {
                         uploadError = "Could not process the selected photo."
                         return
                     }
-
                     try await store.updatePetPhoto(currentPet, imageData: compressed)
                 } catch {
                     uploadError = error.localizedDescription
@@ -78,96 +109,142 @@ struct PetDetailView: View {
         )) {
             Button("OK") { uploadError = nil }
         } message: {
-            if let msg = uploadError {
-                Text(msg)
-            }
-        }
-    }
-
-    private var petHeader: some View {
-        VStack(spacing: 8) {
-            PhotosPicker(selection: $photoPickerItem, matching: .images) {
-                ZStack {
-                    PetAvatarView(pet: currentPet, size: 84)
-
-                    if isUploadingPhoto {
-                        Circle()
-                            .fill(.ultraThinMaterial)
-                            .frame(width: 84, height: 84)
-                        ProgressView()
-                    }
-
-                    Image(systemName: "camera.circle.fill")
-                        .font(.title3)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, .tint)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                        .frame(width: 84, height: 84)
-                        .offset(x: 4, y: 4)
-                }
-            }
-            .accessibilityLabel("Change pet photo")
-
-            Text(currentPet.name)
-                .font(.title2.bold())
-
-            Text("\(currentPet.breed) · \(currentPet.type)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-
-            if let birthday = currentPet.birthday {
-                Label(birthday.formatted(date: .abbreviated, time: .omitted),
-                      systemImage: "birthday.cake")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .padding(.top, 16)
-        .padding(.bottom, 12)
-    }
-
-    private var tabPicker: some View {
-        HStack(spacing: 0) {
-            ForEach(PetDetailTab.allCases, id: \.self) { tab in
-                let selected = selectedTab == tab
-                Button {
-                    selectedTab = tab
-                } label: {
-                    VStack(spacing: 5) {
-                        Image(systemName: tab.icon)
-                            .font(.system(size: 15, weight: selected ? .semibold : .regular))
-                        Text(tab.rawValue)
-                            .font(.caption2)
-                            .fontWeight(selected ? .semibold : .regular)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 10)
-                    .foregroundStyle(selected ? Color.accentColor : Color.secondary)
-                }
-                .overlay(alignment: .bottom) {
-                    if selected {
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundStyle(.tint)
-                    }
-                }
-            }
-        }
-        .background(.bar)
-        .overlay(alignment: .bottom) {
-            Divider()
+            if let msg = uploadError { Text(msg) }
         }
     }
 
     @ViewBuilder
-    private var tabContent: some View {
-        switch selectedTab {
-        case .vet:          VetTabView(pet: currentPet)
-        case .appointments: AppointmentsTabView(pet: currentPet)
-        case .history:      ClinicalHistoryTabView(pet: currentPet)
-        case .events:       EventsTabView(pet: currentPet)
-        case .files:        FilesTabView(pet: currentPet)
+    private var petBackground: some View {
+        if let urlStr = currentPet.photoUrl, let url = URL(string: urlStr) {
+            AsyncImage(url: url) { image in
+                image.resizable().scaledToFill()
+            } placeholder: {
+                Rectangle().fill(.quaternary)
+            }
+            .ignoresSafeArea()
+        } else {
+            Rectangle().fill(.quaternary).ignoresSafeArea()
         }
+    }
+
+    private var petNameHeader: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(currentPet.name)
+                    .font(.title2.bold())
+                    .foregroundStyle(.white)
+                Text("\(currentPet.breed) · \(currentPet.type)")
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.8))
+            }
+            Spacer()
+            PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                ZStack {
+                    if isUploadingPhoto {
+                        ProgressView()
+                            .frame(width: 36, height: 36)
+                    } else {
+                        Image(systemName: "camera")
+                            .font(.body)
+                            .foregroundStyle(.white)
+                            .frame(width: 36, height: 36)
+                    }
+                }
+            }
+            .accessibilityLabel("Change pet photo")
+        }
+    }
+
+    private var statsRow: some View {
+        HStack(spacing: 12) {
+            if let age = ageString {
+                StatPill(label: "Age", value: age)
+            }
+            if let birthday = currentPet.birthday {
+                StatPill(label: "Birthday", value: birthday.formatted(date: .abbreviated, time: .omitted))
+            }
+            Spacer()
+        }
+    }
+
+    private var sectionGrid: some View {
+        VStack(spacing: 12) {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                PetSectionCard(section: .vet)          { selectedSection = .vet }
+                PetSectionCard(section: .appointments) { selectedSection = .appointments }
+                PetSectionCard(section: .history)      { selectedSection = .history }
+                PetSectionCard(section: .events)       { selectedSection = .events }
+            }
+            PetSectionCard(section: .files) { selectedSection = .files }
+        }
+    }
+}
+
+private enum PetSection: String, Identifiable {
+    case vet, appointments, history, events, files
+    var id: String { rawValue }
+
+    var icon: String {
+        switch self {
+        case .vet:          return "stethoscope"
+        case .appointments: return "calendar"
+        case .history:      return "clock.arrow.circlepath"
+        case .events:       return "list.bullet"
+        case .files:        return "folder"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .vet:          return "Vet / Clinic"
+        case .appointments: return "Appointments"
+        case .history:      return "History"
+        case .events:       return "Events"
+        case .files:        return "Files"
+        }
+    }
+}
+
+private struct PetSectionCard: View {
+    let section: PetSection
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                Image(systemName: section.icon)
+                    .font(.title2)
+                    .foregroundStyle(.tint)
+                Text(section.title)
+                    .font(.subheadline)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(.regularMaterial)
+            .clipShape(.rect(cornerRadius: 14))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(section.title)
+    }
+}
+
+private struct StatPill: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        VStack(spacing: 2) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+            Text(value)
+                .font(.subheadline.bold())
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .background(.regularMaterial)
+        .clipShape(.rect(cornerRadius: 10))
     }
 }
 
