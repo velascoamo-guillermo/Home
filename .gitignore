@@ -1,1 +1,3 @@
 *.xcconfig
+.superpowers/
+docs/superpowers/
