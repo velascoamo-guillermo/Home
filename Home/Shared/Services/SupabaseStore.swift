@@ -62,6 +62,23 @@ final class SupabaseStore {
         pets.append(pet)
     }
 
+    func updatePet(_ pet: Pet) async throws {
+        try await client.from("pets").update(pet).eq("id", value: pet.id).execute()
+        if let i = pets.firstIndex(where: { $0.id == pet.id }) {
+            pets[i] = pet
+        }
+    }
+
+    func updatePetPhoto(_ pet: Pet, imageData: Data) async throws {
+        let storagePath = "\(pet.id)/photo.jpg"
+        try? await client.storage.from("pet-files").remove(paths: [storagePath])
+        try await client.storage.from("pet-files").upload(storagePath, data: imageData)
+        let photoUrl = try! client.storage.from("pet-files").getPublicURL(path: storagePath)
+        var updated = pet
+        updated.photoUrl = photoUrl.absoluteString
+        try await updatePet(updated)
+    }
+
     func deletePet(_ pet: Pet) async throws {
         let petFiles = files(for: pet.id)
         if !petFiles.isEmpty {

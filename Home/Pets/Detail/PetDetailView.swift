@@ -1,4 +1,5 @@
 import SwiftUI
+import PhotosUI
 
 enum PetDetailTab: String, CaseIterable {
     case vet = "Vet"
@@ -20,7 +21,14 @@ enum PetDetailTab: String, CaseIterable {
 
 struct PetDetailView: View {
     let pet: Pet
+    @Environment(SupabaseStore.self) private var store
     @State private var selectedTab: PetDetailTab = .vet
+    @State private var photoPickerItem: PhotosPickerItem? = nil
+    @State private var isUploadingPhoto = false
+
+    private var currentPet: Pet {
+        store.pets.first(where: { $0.id == pet.id }) ?? pet
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -28,22 +36,86 @@ struct PetDetailView: View {
             tabPicker
             tabContent
         }
-        .navigationTitle(pet.name)
+        .navigationTitle(currentPet.name)
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: photoPickerItem) { _, item in
+            guard let item else { return }
+            Task {
+                isUploadingPhoto = true
+                if let data = try? await item.loadTransferable(type: Data.self) {
+                    try? await store.updatePetPhoto(currentPet, imageData: data)
+                }
+                isUploadingPhoto = false
+                photoPickerItem = nil
+            }
+        }
     }
 
     private var petHeader: some View {
         VStack(spacing: 8) {
-            Image(systemName: pet.type == "Dog" ? "dog.fill" : "cat.fill")
-                .font(.system(size: 56))
-                .foregroundStyle(.tint)
-            Text(pet.name)
+            PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                ZStack {
+                    petPhoto
+                        .frame(width: 84, height: 84)
+                        .clipShape(.circle)
+
+                    if isUploadingPhoto {
+                        Circle()
+                            .fill(.ultraThinMaterial)
+                            .frame(width: 84, height: 84)
+                        ProgressView()
+                    }
+
+                    Image(systemName: "camera.circle.fill")
+                        .font(.title3)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.white, .tint)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                        .frame(width: 84, height: 84)
+                        .offset(x: 4, y: 4)
+                }
+            }
+            .accessibilityLabel("Change pet photo")
+
+            Text(currentPet.name)
                 .font(.title2.bold())
-            Text("\(pet.breed) · \(pet.type)")
+
+            Text("\(currentPet.breed) · \(currentPet.type)")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+
+            if let birthday = currentPet.birthday {
+                Label(birthday.formatted(date: .abbreviated, time: .omitted),
+                      systemImage: "birthday.cake")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
-        .padding(.vertical, 16)
+        .padding(.top, 16)
+        .padding(.bottom, 12)
+    }
+
+    @ViewBuilder
+    private var petPhoto: some View {
+        if let urlString = currentPet.photoUrl, let url = URL(string: urlString) {
+            AsyncImage(url: url) { image in
+                image.resizable().scaledToFill()
+            } placeholder: {
+                iconPlaceholder
+            }
+        } else {
+            iconPlaceholder
+        }
+    }
+
+    private var iconPlaceholder: some View {
+        Circle()
+            .fill(.tint.opacity(0.12))
+            .overlay {
+                Image(systemName: currentPet.type == "Dog" ? "dog.fill" : "cat.fill")
+                    .font(.system(size: 34))
+                    .foregroundStyle(.tint)
+            }
     }
 
     private var tabPicker: some View {
@@ -82,11 +154,11 @@ struct PetDetailView: View {
     @ViewBuilder
     private var tabContent: some View {
         switch selectedTab {
-        case .vet:          VetTabView(pet: pet)
-        case .appointments: AppointmentsTabView(pet: pet)
-        case .history:      ClinicalHistoryTabView(pet: pet)
-        case .events:       EventsTabView(pet: pet)
-        case .files:        FilesTabView(pet: pet)
+        case .vet:          VetTabView(pet: currentPet)
+        case .appointments: AppointmentsTabView(pet: currentPet)
+        case .history:      ClinicalHistoryTabView(pet: currentPet)
+        case .events:       EventsTabView(pet: currentPet)
+        case .files:        FilesTabView(pet: currentPet)
         }
     }
 }
